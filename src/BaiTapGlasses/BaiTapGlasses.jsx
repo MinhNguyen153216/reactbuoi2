@@ -87,11 +87,12 @@ export default class BaiTapGlasses extends Component {
       url: "./img/v1-fixed.png",
       desc: "Light pink square lenses define these sunglasses, ending with amother of pearl effect tip. ",
     },
+    animationState: "animate__animated animate__fadeInDown"
   };
 
-  changeState = (newState) => {
+  changeState = (newState, newAnimate) => {
     console.log(newState);
-    this.setState({ glassesData: newState });
+    this.setState({ glassesData: newState, animationState: newAnimate });
   };
 
   renderGlassesList = () => {
@@ -105,7 +106,10 @@ export default class BaiTapGlasses extends Component {
               width={180}
               style={{ cursor: "pointer" }}
               onClick={() => {
-                this.changeState(data[index]);
+                this.changeState(
+                  data[index],
+                  "animate__animated animate__fadeInDown"
+                );
               }}
             />
           </div>
@@ -136,7 +140,11 @@ export default class BaiTapGlasses extends Component {
               <img src="./img/model.jpg" alt="" />
               <div>
                 <img
-                  className="animate__animated animate__fadeInDown"
+                  className={this.state.animationState}
+                  onAnimationEnd={() => {
+                    this.setState({ animationState: "" });
+                    console.log(this.state);
+                  }}
                   src={this.state.glassesData["url"]}
                   alt="..."
                   style={{
@@ -162,7 +170,9 @@ export default class BaiTapGlasses extends Component {
                   >
                     <h4 className="pt-2">{this.state.glassesData["name"]}</h4>
                     <p>{this.state.glassesData["desc"]}</p>
-                    <p className="mb-0 pb-3">{this.state.glassesData["price"]}$</p>
+                    <p className="mb-0 pb-3">
+                      {this.state.glassesData["price"]}$
+                    </p>
                   </div>
                 </div>
               </div>
@@ -178,6 +188,7 @@ export default class BaiTapGlasses extends Component {
         </div>
 
         <div style={{ height: 100 }}></div>
+        {console.log(this.state)}
       </div>
     );
   }
